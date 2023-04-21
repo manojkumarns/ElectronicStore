@@ -64,18 +64,23 @@ public class ProductServiceImpl implements ProductService {
     public PageableResponse<ProductDto> geAll(int pageNumber ,int pageSize,String sortBy, String sortDir) {
         Sort sort= (sortDir.equalsIgnoreCase("desc"))?(Sort.by(sortBy).descending()):(Sort.by(sortBy).ascending());
         Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
-
         Page<Product> page = productRepository.findAll(pageable);
         return Helper.getPageableResponse(page,ProductDto.class);
     }
 
     @Override
     public PageableResponse<ProductDto> getAllLive(int pageNumber ,int pageSize,String sortBy, String sortDir) {
-        return null;
+        Sort sort= (sortDir.equalsIgnoreCase("desc"))?(Sort.by(sortBy).descending()):(Sort.by(sortBy).ascending());
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
+        Page<Product> page = productRepository.findByLiveTrue(pageable);
+        return Helper.getPageableResponse(page,ProductDto.class);
     }
 
     @Override
     public PageableResponse<ProductDto> searchByTitle(String subTitle,int pageNumber ,int pageSize,String sortBy, String sortDir) {
-        return null;
+        Sort sort= (sortDir.equalsIgnoreCase("desc"))?(Sort.by(sortBy).descending()):(Sort.by(sortBy).ascending());
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
+        Page<Product> page = productRepository.findByTitleContaining(subTitle,pageable);
+        return Helper.getPageableResponse(page,ProductDto.class);
     }
 }
